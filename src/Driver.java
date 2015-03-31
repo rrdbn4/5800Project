@@ -1,13 +1,16 @@
 package code;
 
+
+
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
-
+import java.lang.Thread.*;
 /*
 Robert Dunn, Holly Busken, Matt Lindner
 */
-public class Driver extends JFrame
+public class Driver extends JFrame implements ActionListener
 {
   Node redA;
   Node redB;
@@ -34,18 +37,31 @@ public class Driver extends JFrame
 	
 	int num = (y3-y1)/3;
 	
-	redA=new Node(1,"red",x1,y1+num);
-	redB=new Node(2,"red",x1,y3-num);
-	blueA=new Node(3,"blue",x4,y1+num);
-	blueB=new Node(4,"blue",x4,y3-num);
-	
-	
+	redA=new Node(1,"red",x1,y1+num,1);
+	redB=new Node(2,"red",x1,y3-num,1);
+	blueA=new Node(3,"blue",x4,y1+num,5);
+	blueB=new Node(4,"blue",x4,y3-num,5);	
 	repaint();
+	
+	int x=500;
+	while(x!=0)
+	{
+      Timer timer=new Timer(1000, this);
+	  timer.setInitialDelay(10);
+	  timer.start();
+	  x=x-1;
+	}
   } 
 
   public static void main(String[] args)
   {
     new Driver();
+
+  }
+  
+  public void actionPerformed(ActionEvent e)
+  {
+    repaint();
   }
 
   public void paint(Graphics g)
@@ -65,6 +81,11 @@ public class Driver extends JFrame
     g.drawLine(x4, y1, x4, y3);
     g.drawLine(x3, y2, x4, y3);
 	
+	//Update nodes
+	
+	updateNode(redA);	
+	
+	//draw Nodes
 	int diameter=10;
 	int rad=diameter/2;
 	g.setColor(Color.red);
@@ -73,7 +94,42 @@ public class Driver extends JFrame
 	g.setColor(Color.blue);
 	g.fillOval(blueA.x-rad,blueA.y-rad,diameter,diameter);
 	g.fillOval(blueB.x-rad,blueB.y-rad,diameter,diameter);
-	
-	//draw nodes
+  }
+  
+  public void updateNode(Node node)
+  {
+    long step=1/(y3-y1);
+	System.out.println(step);
+    if(node.state==1)
+	{
+	  if(node.x==x1 && node.y==y1)
+	  {
+	    node.state=2;
+		//slope = y2-y1 / x2-x1
+		int xdiff=x2-x1;
+		int ydiff=y2-y1;
+		node.x=node.x+xdiff;
+		node.y=node.y+ydiff;
+	  }
+	  else
+	    node.y=node.y-1;
+	}
+	else if(node.state==2)
+	{
+	  if(node.x==x2 && node.y==y2)
+	  {
+	    node.state=3;
+		node.x=node.x+1;
+	  }	
+	}
+	else if(node.state==3)
+	{
+      if(node.x==x3 && node.y==y2)
+	  {
+	    node.state=4;
+	  }
+	  else
+	    node.x=node.x+1;
+	}
   }
 }
