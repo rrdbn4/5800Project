@@ -1,5 +1,7 @@
 package code;
 
+
+
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -80,8 +82,10 @@ public class Driver extends JFrame implements ActionListener
     g.drawLine(x3, y2, x4, y3);
 	
 	//Update nodes
-	
-	updateNode(redA);	
+	updateNode(redA);
+	updateNode(redB);
+    updateNode(blueA);
+    updateNode(blueB);	
 	
 	//draw Nodes
 	int diameter=10;
@@ -116,6 +120,7 @@ public class Driver extends JFrame implements ActionListener
 	{
 	  if(node.x==x2 && node.y==y2)
 	  {
+	    //Entering the bridge going East
 	    node.state=3;
 		node.x=node.x+15;
 	  }
@@ -129,8 +134,10 @@ public class Driver extends JFrame implements ActionListener
 	}
 	else if(node.state==3)
 	{
+	  //Moving East on the bridge 
       if(node.x==x3 && node.y==y2)
 	  {
+	    //Leaving the bridge to go North East
 	    node.state=4;
 		int xdiff=x4-x3;
 		int ydiff=y1-y2;	  
@@ -174,6 +181,7 @@ public class Driver extends JFrame implements ActionListener
 	{
 	  if(node.x==x3 && node.y==y2)
 	  {
+	    //Now entering the bridge to go West
 	    node.state=7;
 		node.x=node.x-15;
 	  }
@@ -187,8 +195,10 @@ public class Driver extends JFrame implements ActionListener
 	}
 	else if(node.state==7)
 	{
+	  //Moving West on the Bridge
 	  if(node.x==x2 && node.y==y2)
 	  {
+	    //Leaving Bridge to go South West
 	    node.state=8;
 		int xdiff=x1-x2;
 		int ydiff=y3-y2;	  
