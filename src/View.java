@@ -30,7 +30,7 @@ public class View extends JPanel implements ActionListener
     validate();    
     
 
-    Timer timer=new Timer(200, this);
+    Timer timer = new Timer(200, this);
     timer.setInitialDelay(0);
     timer.setRepeats(true);
     timer.start();
