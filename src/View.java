@@ -13,10 +13,8 @@ import javax.swing.event.*;
 /*
 Robert Dunn, Holly Busken, Matt Lindner
 */
-public class View extends JPanel implements Runnable
+public class View extends JPanel implements ActionListener
 {
-  ExecutorService executor;
-
   Node redA;
   Node redB;
   Node blueA;
@@ -32,26 +30,15 @@ public class View extends JPanel implements Runnable
     validate();    
     
 
-    // Timer timer=new Timer(200, this);
-    // timer.setInitialDelay(0);
-    // timer.setRepeats(true);
-    // timer.start();
-
-    executor = Executors.newFixedThreadPool(1);
-    executor.execute(this);
+    Timer timer=new Timer(200, this);
+    timer.setInitialDelay(0);
+    timer.setRepeats(true);
+    timer.start();
   }
 
-  public void run()
+  public void actionPerformed(ActionEvent e)
   {
-    while(true)
-    {
-      try
-      {
-        Thread.sleep(200);
-      }
-      catch(InterruptedException e){}
-      repaint();
-    }
+    repaint();
   }
 
   public void paintComponent(Graphics g)
