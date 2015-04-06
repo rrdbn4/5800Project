@@ -1,8 +1,5 @@
 package code;
 
-
-
-
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -112,23 +109,30 @@ public class View extends JPanel implements ActionListener
   
   public void updateNode(Node node)
   {
-    System.out.println(y1-y3);
+    int updown=15;
+	int diagonal=20;
     if(node.state==1)
   {
+    //Going North on track
     if(node.x==x1 && node.y==y1)
-    {
-      //Going North on track
+    {      
       node.state=2;
     //slope = y2-y1 / x2-x1
     int xdiff=x2-x1;
     int ydiff=y2-y1;
 	
-    node.x=node.x+(xdiff/20);
-    node.y=node.y+(ydiff/20);
+    node.x=node.x+(xdiff/diagonal);
+    node.y=node.y+(ydiff/diagonal);
     }
     else
     {
-      node.y=node.y-15;
+      node.y=node.y-updown;
+	  if(node.y<y1)
+	  {
+	    node.x=x1;
+		node.y=y1;
+		node.state=2;
+	  }
     }
   }
   else if(node.state==2)
@@ -138,14 +142,20 @@ public class View extends JPanel implements ActionListener
     {
       //Entering the bridge going East
       node.state=3;
-      node.x=node.x+15;
+      node.x=node.x+updown;
     }
     else
     {
-    int xdiff=x2-x1;
-    int ydiff=y2-y1;    
-    node.x=node.x+(xdiff/20);
-    node.y=node.y+(ydiff/20);   
+      int xdiff=x2-x1;
+      int ydiff=y2-y1;    
+      node.x=node.x+(xdiff/diagonal);
+      node.y=node.y+(ydiff/diagonal);  
+      if(node.x>x2 || node.y>y2)
+      {
+  	    node.x=x2;
+	    node.y=y2;
+	    node.state=3;
+      }	
     }
   }
   else if(node.state==3)
@@ -157,11 +167,19 @@ public class View extends JPanel implements ActionListener
       node.state=4;
     int xdiff=x4-x3;
     int ydiff=y1-y2;    
-    node.x=node.x+(xdiff/20);
-    node.y=node.y+(ydiff/20);   
+    node.x=node.x+(xdiff/diagonal);
+    node.y=node.y+(ydiff/diagonal);   
     }
     else
-      node.x=node.x+15;
+	{
+      node.x=node.x+updown;
+	  if(node.x>x3)
+	  {
+	    node.x=x3;
+		node.y=y2;
+		node.state=4;
+	  }
+	}
   }
   else if(node.state==4)
   {
@@ -169,14 +187,20 @@ public class View extends JPanel implements ActionListener
     if(node.x==x4 && node.y==y1)
     {
       node.state=5;
-    node.y=node.y+15;
+    node.y=node.y+updown;
     }
     else
     {
-    int xdiff=x4-x3;
-    int ydiff=y1-y2;    
-    node.x=node.x+(xdiff/20);
-    node.y=node.y+(ydiff/20);   
+      int xdiff=x4-x3;
+      int ydiff=y1-y2;    
+      node.x=node.x+(xdiff/diagonal);
+      node.y=node.y+(ydiff/diagonal); 
+      if(node.x>x4 || node.y>y1)
+      {
+	    node.x=x4;
+	    node.y=y1;
+	    node.state=5;
+      }	
     }
   }
   else if(node.state==5)
@@ -185,14 +209,20 @@ public class View extends JPanel implements ActionListener
     if(node.x==x4 && node.y==y3)
     {
       node.state=6;
-    int xdiff=x3-x4;
-    int ydiff=y2-y3;    
-    node.x=node.x+(xdiff/20);
-    node.y=node.y+(ydiff/20);    
+      int xdiff=x3-x4;
+      int ydiff=y2-y3;    
+      node.x=node.x+(xdiff/diagonal);
+      node.y=node.y+(ydiff/diagonal);    
     }
     else
     {
-      node.y=node.y+15;
+      node.y=node.y+updown;
+	  if(node.y>y3)
+	  {
+	    node.x=x4;
+		node.y=y3;
+		node.state=6;
+	  }
     }
   }
   else if(node.state==6)
@@ -202,14 +232,20 @@ public class View extends JPanel implements ActionListener
     {
       //Now entering the bridge to go West
       node.state=7;
-    node.x=node.x-15;
+      node.x=node.x-updown;
     }
     else
     {
     int xdiff=x3-x4;
     int ydiff=y2-y3;    
-    node.x=node.x+(xdiff/20);
-    node.y=node.y+(ydiff/20);   
+    node.x=node.x+(xdiff/diagonal);
+    node.y=node.y+(ydiff/diagonal);
+    if(node.x<x3 || node.y<y2)
+    {
+	  node.x=x3;
+	  node.y=y2;
+	  node.state=7;
+    }	
     }
   }
   else if(node.state==7)
@@ -221,12 +257,18 @@ public class View extends JPanel implements ActionListener
       node.state=8;
     int xdiff=x1-x2;
     int ydiff=y3-y2;    
-    node.x=node.x+(xdiff/20);
-    node.y=node.y+(ydiff/20);     
+    node.x=node.x+(xdiff/diagonal);
+    node.y=node.y+(ydiff/diagonal);     
     }
     else
     {
-      node.x=node.x-15;
+      node.x=node.x-updown;
+	  if(node.x<x2)
+	  {
+	    node.x=x2;
+		node.y=y2;
+		node.state=8;
+	  }
     }
   }
   else if(node.state==8)
@@ -235,14 +277,20 @@ public class View extends JPanel implements ActionListener
     if(node.x==x1 && node.y==y3)
     {
       node.state=1;
-    node.y=node.y-15;
+      node.y=node.y-updown;
     }
     else
     {
-    int xdiff=x1-x2;
-    int ydiff=y3-y2;    
-    node.x=node.x+(xdiff/20);
-    node.y=node.y+(ydiff/20);     
+      int xdiff=x1-x2;
+      int ydiff=y3-y2;    
+      node.x=node.x+(xdiff/diagonal);
+      node.y=node.y+(ydiff/diagonal); 
+      if(node.x>x1 || node.y > y3)
+	  {
+	    node.x=x1;
+		node.y=y3;
+		node.state=1;
+	  }
     }
     
   }
