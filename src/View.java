@@ -1,5 +1,4 @@
 package code;
-
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -195,7 +194,7 @@ public class View extends JPanel implements ActionListener
       int ydiff=y1-y2;    
       node.x=node.x+(xdiff/diagonal);
       node.y=node.y+(ydiff/diagonal); 
-      if(node.x>x4 || node.y>y1)
+      if(node.x>x4 || node.y<y1)
       {
 	    node.x=x4;
 	    node.y=y1;
@@ -285,7 +284,7 @@ public class View extends JPanel implements ActionListener
       int ydiff=y3-y2;    
       node.x=node.x+(xdiff/diagonal);
       node.y=node.y+(ydiff/diagonal); 
-      if(node.x>x1 || node.y > y3)
+      if(node.x<x1 || node.y > y3)
 	  {
 	    node.x=x1;
 		node.y=y3;
