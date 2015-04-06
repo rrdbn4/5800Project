@@ -2,6 +2,7 @@ package code;
 
 
 
+
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -46,6 +47,7 @@ public class View extends JPanel implements ActionListener
     super.paintComponent(g);
     if(firstTime)
     {
+	  /*
       x1 = getInsets().left + (int)(getWidth() * 0.15);
       x2 = getInsets().left + (int)(getWidth() * 0.35);
       x3 = getInsets().left + (int)(getWidth() * 0.65);
@@ -53,7 +55,20 @@ public class View extends JPanel implements ActionListener
       y1 = getInsets().top + (int)(getHeight() * 0.2);
       y2 = getInsets().top + (int)(getHeight() * 0.5);
       y3 = getInsets().top + (int)(getHeight() * 0.8);
-    
+      */
+	  
+	  int height=600;
+	  int width=800;
+	  
+	  x1 = getInsets().left + (int)(width * 0.15);
+      x2 = getInsets().left + (int)(width * 0.35);
+      x3 = getInsets().left + (int)(width * 0.65);
+      x4 = getInsets().left + (int)(width * 0.85);
+      y1 = getInsets().top + (int)(height * 0.2);
+      y2 = getInsets().top + (int)(height * 0.5);
+      y3 = getInsets().top + (int)(height * 0.8);
+	  
+	  
       int num = (y3-y1)/3;
       
       redA=new Node(1,"red",x1,y1+num,1);
@@ -97,6 +112,7 @@ public class View extends JPanel implements ActionListener
   
   public void updateNode(Node node)
   {
+    System.out.println(y1-y3);
     if(node.state==1)
   {
     if(node.x==x1 && node.y==y1)
@@ -105,6 +121,7 @@ public class View extends JPanel implements ActionListener
     //slope = y2-y1 / x2-x1
     int xdiff=x2-x1;
     int ydiff=y2-y1;
+	
     node.x=node.x+(xdiff/20);
     node.y=node.y+(ydiff/20);
     }
@@ -119,7 +136,7 @@ public class View extends JPanel implements ActionListener
     {
       //Entering the bridge going East
       node.state=3;
-    node.x=node.x+15;
+      node.x=node.x+15;
     }
     else
     {
