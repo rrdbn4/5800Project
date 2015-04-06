@@ -117,6 +117,7 @@ public class View extends JPanel implements ActionListener
   {
     if(node.x==x1 && node.y==y1)
     {
+      //Going North on track
       node.state=2;
     //slope = y2-y1 / x2-x1
     int xdiff=x2-x1;
@@ -132,6 +133,7 @@ public class View extends JPanel implements ActionListener
   }
   else if(node.state==2)
   {
+    //Going South East on track
     if(node.x==x2 && node.y==y2)
     {
       //Entering the bridge going East
@@ -163,6 +165,7 @@ public class View extends JPanel implements ActionListener
   }
   else if(node.state==4)
   {
+    //Moving North East on track
     if(node.x==x4 && node.y==y1)
     {
       node.state=5;
@@ -178,6 +181,7 @@ public class View extends JPanel implements ActionListener
   }
   else if(node.state==5)
   {
+    //Moving South on track
     if(node.x==x4 && node.y==y3)
     {
       node.state=6;
@@ -193,6 +197,7 @@ public class View extends JPanel implements ActionListener
   }
   else if(node.state==6)
   {
+    //Moving North West on track
     if(node.x==x3 && node.y==y2)
     {
       //Now entering the bridge to go West
@@ -226,6 +231,7 @@ public class View extends JPanel implements ActionListener
   }
   else if(node.state==8)
   {
+    //Moving South West on track
     if(node.x==x1 && node.y==y3)
     {
       node.state=1;
