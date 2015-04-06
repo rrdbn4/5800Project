@@ -20,27 +20,26 @@ public class Node
     state=st;
   }
   
-  public String getDirection(int state);
+  public String getDirection(int state)
   {
+    String direction ="Unknown";
     if(state ==1)
-	  return "North";
+	  direction = "North";
 	else if(state ==2)
-	  return "South";
+	  direction = "South";
 	else if(state==3)
-	  return "South East";
+	  direction = "South East";
 	else if(state==4)
-	  return "North East";
+	  direction = "North East";
 	else if(state ==5)
-	  return "South";
+	  direction = "South";
 	else if(state ==6)
-	  return "North West";
+	  direction = "North West";
 	else if(state==7)
-	  return "West";
+	  direction = "West";
 	else if(state ==8)
-	  return "South West";
-	else
-	  return "Unknown";
+	  direction = "South West";
+	return direction;
   }
  
 }
-
