@@ -25,11 +25,6 @@ public class Driver extends JFrame
     add(new View());
     validate();
   	
-
-    // Timer timer=new Timer(200, this);
-    // timer.setInitialDelay(0);
-    // timer.setRepeats(true);
-    // timer.start();
   } 
 
   public static void main(String[] args)
