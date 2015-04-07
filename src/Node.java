@@ -5,13 +5,12 @@ import javax.swing.*;
 
 public class Node
 {
-  String direction;
   int ID;
   String color;
   int x;
   int y;
-  int state;
-  public Node(int id, String clr, int xcord, int ycord, int st)
+  Direction state;
+  public Node(int id, String clr, int xcord, int ycord, Direction st)
   {
     ID=id;
     color=clr;
@@ -20,24 +19,24 @@ public class Node
     state=st;
   }
   
-  public String getDirection(int state)
+  public String getDirection(Direction state)
   {
     String direction ="Unknown";
-    if(state ==1)
-	  direction = "North";
-    else if(state ==2)
-      direction = "South";
-    else if(state==3)
+    if(state == Direction.NORTH)
+      direction = "North";
+    else if(state == Direction.SOUTH_EAST)
       direction = "South East";
-    else if(state==4)
+    else if(state == Direction.EAST)
+      direction = "East";
+    else if(state == Direction.NORTH_EAST)
       direction = "North East";
-    else if(state ==5)
+    else if(state == Direction.SOUTH)
       direction = "South";
-    else if(state ==6)
+    else if(state == Direction.NORTH_WEST)
       direction = "North West";
-    else if(state==7)
+    else if(state == Direction.WEST)
       direction = "West";
-    else if(state ==8)
+    else if(state == Direction.SOUTH_WEST)
       direction = "South West";
     return direction;
   }

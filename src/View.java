@@ -53,8 +53,8 @@ public class View extends JPanel implements ActionListener
       y3 = getInsets().top + (int)(getHeight() * 0.8);
       */
 	  
-	  int height=600;
-	  int width=800;
+	  final int height=600;
+	  final int width=800;
 	  
 	  x1 = getInsets().left + (int)(width * 0.15);
       x2 = getInsets().left + (int)(width * 0.35);
@@ -67,10 +67,10 @@ public class View extends JPanel implements ActionListener
 	  
       int num = (y3-y1)/3;
       
-      redA=new Node(1,"red",x1,y1+num,1);
-      redB=new Node(2,"red",x1,y3-num,1);
-      blueA=new Node(3,"blue",x4,y1+num,5);
-      blueB=new Node(4,"blue",x4,y3-num,5); 
+      redA=new Node(1,"red",x1,y1+num,Direction.NORTH);
+      redB=new Node(2,"red",x1,y3-num,Direction.NORTH);
+      blueA=new Node(3,"blue",x4,y1+num,Direction.SOUTH);
+      blueB=new Node(4,"blue",x4,y3-num,Direction.SOUTH); 
 
       firstTime = false;
     }
@@ -109,38 +109,38 @@ public class View extends JPanel implements ActionListener
   public void updateNode(Node node)
   {
     int updown=15;
-	int diagonal=20;
-    if(node.state==1)
-  {
-    //Going North on track
-    if(node.x==x1 && node.y==y1)
-    {      
-      node.state=2;
-    //slope = y2-y1 / x2-x1
-    int xdiff=x2-x1;
-    int ydiff=y2-y1;
-	
-    node.x=node.x+(xdiff/diagonal);
-    node.y=node.y+(ydiff/diagonal);
-    }
-    else
+    int diagonal=20;
+    if(node.state == Direction.NORTH)
     {
-      node.y=node.y-updown;
-	  if(node.y<y1)
-	  {
-	    node.x=x1;
-		node.y=y1;
-		node.state=2;
-	  }
+      //Going North on track
+      if(node.x==x1 && node.y==y1)
+      {      
+        node.state = Direction.SOUTH_EAST;
+        //slope = y2-y1 / x2-x1
+        int xdiff=x2-x1;
+        int ydiff=y2-y1;
+
+        node.x=node.x+(xdiff/diagonal);
+        node.y=node.y+(ydiff/diagonal);
+      }
+      else
+      {
+        node.y=node.y-updown;
+        if(node.y<y1)
+        {
+    	    node.x=x1;
+          node.y=y1;
+          node.state=Direction.SOUTH_EAST;
+        }
+      }
     }
-  }
-  else if(node.state==2)
+  else if(node.state==Direction.SOUTH_EAST)
   {
     //Going South East on track
     if(node.x==x2 && node.y==y2)
     {
       //Entering the bridge going East
-      node.state=3;
+      node.state=Direction.EAST;
       node.x=node.x+updown;
     }
     else
@@ -151,41 +151,41 @@ public class View extends JPanel implements ActionListener
       node.y=node.y+(ydiff/diagonal);  
       if(node.x>x2 || node.y>y2)
       {
-  	    node.x=x2;
-	    node.y=y2;
-	    node.state=3;
+        node.x=x2;
+        node.y=y2;
+        node.state=Direction.EAST;
       }	
     }
   }
-  else if(node.state==3)
+  else if(node.state==Direction.EAST)
   {
     //Moving East on the bridge 
-      if(node.x==x3 && node.y==y2)
+    if(node.x==x3 && node.y==y2)
     {
       //Leaving the bridge to go North East
-      node.state=4;
-    int xdiff=x4-x3;
-    int ydiff=y1-y2;    
-    node.x=node.x+(xdiff/diagonal);
-    node.y=node.y+(ydiff/diagonal);   
+      node.state=Direction.NORTH_EAST;
+      int xdiff=x4-x3;
+      int ydiff=y1-y2;    
+      node.x=node.x+(xdiff/diagonal);
+      node.y=node.y+(ydiff/diagonal);   
     }
     else
-	{
+    {
       node.x=node.x+updown;
-	  if(node.x>x3)
-	  {
-	    node.x=x3;
-		node.y=y2;
-		node.state=4;
-	  }
-	}
+      if(node.x>x3)
+      {
+        node.x=x3;
+        node.y=y2;
+        node.state=Direction.NORTH_EAST;
+      }
+    }
   }
-  else if(node.state==4)
+  else if(node.state==Direction.NORTH_EAST)
   {
     //Moving North East on track
     if(node.x==x4 && node.y==y1)
     {
-      node.state=5;
+      node.state=Direction.SOUTH;
     node.y=node.y+updown;
     }
     else
@@ -198,16 +198,16 @@ public class View extends JPanel implements ActionListener
       {
 	    node.x=x4;
 	    node.y=y1;
-	    node.state=5;
+	    node.state=Direction.SOUTH;
       }	
     }
   }
-  else if(node.state==5)
+  else if(node.state==Direction.SOUTH)
   {
     //Moving South on track
     if(node.x==x4 && node.y==y3)
     {
-      node.state=6;
+      node.state=Direction.NORTH_WEST;
       int xdiff=x3-x4;
       int ydiff=y2-y3;    
       node.x=node.x+(xdiff/diagonal);
@@ -220,17 +220,17 @@ public class View extends JPanel implements ActionListener
 	  {
 	    node.x=x4;
 		node.y=y3;
-		node.state=6;
+		node.state=Direction.NORTH_WEST;
 	  }
     }
   }
-  else if(node.state==6)
+  else if(node.state==Direction.NORTH_WEST)
   {
     //Moving North West on track
     if(node.x==x3 && node.y==y2)
     {
       //Now entering the bridge to go West
-      node.state=7;
+      node.state=Direction.WEST;
       node.x=node.x-updown;
     }
     else
@@ -243,17 +243,17 @@ public class View extends JPanel implements ActionListener
     {
 	  node.x=x3;
 	  node.y=y2;
-	  node.state=7;
+	  node.state=Direction.WEST;
     }	
     }
   }
-  else if(node.state==7)
+  else if(node.state==Direction.WEST)
   {
     //Moving West on the Bridge
     if(node.x==x2 && node.y==y2)
     {
       //Leaving Bridge to go South West
-      node.state=8;
+      node.state=Direction.SOUTH_WEST;
     int xdiff=x1-x2;
     int ydiff=y3-y2;    
     node.x=node.x+(xdiff/diagonal);
@@ -266,16 +266,16 @@ public class View extends JPanel implements ActionListener
 	  {
 	    node.x=x2;
 		node.y=y2;
-		node.state=8;
+		node.state=Direction.SOUTH_WEST;
 	  }
     }
   }
-  else if(node.state==8)
+  else if(node.state==Direction.SOUTH_WEST)
   {
     //Moving South West on track
     if(node.x==x1 && node.y==y3)
     {
-      node.state=1;
+      node.state=Direction.NORTH;
       node.y=node.y-updown;
     }
     else
@@ -288,7 +288,7 @@ public class View extends JPanel implements ActionListener
 	  {
 	    node.x=x1;
 		node.y=y3;
-		node.state=1;
+		node.state=Direction.NORTH;
 	  }
     }
     
