@@ -39,7 +39,7 @@ public class Node implements ActionListener
 
   public void actionPerformed(ActionEvent e)
   {
-    this.update();
+    this.update();  //for the calls from the timer
   }
 
   public void request(Node callingNode)
@@ -61,10 +61,10 @@ public class Node implements ActionListener
   public void ack()
   {
     acks++;
-    if(acks >= inst.numNodes - 1)
+    if(acks >= inst.numNodes - 1) //recieved acks from everyone. safe to enter the CS now
     {
-      waiting = false;
-      update();
+      waiting = false; //this allows it to go past the timer check at the beginning of update()
+      update();        //acks will be reset to 0 inside update()
     }
   }
 
@@ -90,6 +90,7 @@ public class Node implements ActionListener
     return false;
   }
 
+  //send acks to all nodes in the request buffer
   public void exitCriticalSection()
   {
     int size = requestBuffer.size();
@@ -106,7 +107,7 @@ public class Node implements ActionListener
   public void update()
   {
     if(waiting)   //waiting to enter CS. skip everything else
-      return;
+      return;     //this ismainly for when the timer tries to call update() during a waiting state
 
     int updown=15;
     int diagonal=20;
