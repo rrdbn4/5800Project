@@ -64,8 +64,9 @@ public class View extends JPanel
     g.drawLine(x3, y2, x4, y3);
   
     //draw Nodes
-    final int diameter=10;
-    final int rad=diameter/2;
+    final int diameter = 10;
+    final int rad = diameter/2;
+    
     g.setColor(Color.red);
     for(int i = 0; i < numNodes / 2; i++)
       g.fillOval(nodes[i].x-rad,nodes[i].y-rad,diameter,diameter);

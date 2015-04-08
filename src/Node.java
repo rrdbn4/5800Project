@@ -5,6 +5,8 @@ import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Calendar;
+import java.util.*;
 
 public class Node implements ActionListener
 {
@@ -14,8 +16,14 @@ public class Node implements ActionListener
   int x;
   int y;
   Direction state;
+  boolean waiting = false;
+  int acks = 0;
+  long requestTimestamp = 0;
+  Queue<Node> requestBuffer;
+
   public Node(int id, String clr, int xcord, int ycord, Direction st, View view)
   {
+    requestBuffer = new LinkedList<Node>();
     ID=id;
     color=clr;
     x=xcord;
@@ -34,8 +42,72 @@ public class Node implements ActionListener
     this.update();
   }
 
+  public void request(Node callingNode)
+  {
+    if(state != Direction.WEST && state != Direction.EAST && !waiting) //not in CS and not waiting to enter
+      callingNode.ack();
+    if(state == Direction.WEST || state == Direction.EAST)             //in CS
+      bufferRequest(callingNode);
+    if(state != Direction.WEST && state != Direction.EAST && waiting)  //not in CS and waiting to enter
+    {
+      if(callingNode.requestTimestamp <= this.requestTimestamp)
+        callingNode.ack();
+      else
+        bufferRequest(callingNode);
+    }
+
+  }
+
+  public void ack()
+  {
+    acks++;
+    if(acks >= inst.numNodes - 1)
+    {
+      waiting = false;
+      update();
+    }
+  }
+
+  public void bufferRequest(Node callingNode)
+  {
+    requestBuffer.add(callingNode);
+  }
+
+  //retuns true if the node is allowed to enter the CS
+  //if the node is not allowed to enter the CS, this preps it to enter the CS and returns false
+  public boolean enterCriticalSection()
+  {
+    if(acks >= inst.numNodes - 1)
+      return true;
+
+    waiting = true;
+    requestTimestamp = getTimestamp();
+    for(int i = 0; i < inst.numNodes; i++)
+    {
+      if(i != ID) //don't send a request to yourself
+        inst.nodes[i].request(this);
+    }
+    return false;
+  }
+
+  public void exitCriticalSection()
+  {
+    int size = requestBuffer.size();
+    for(int i = 0; i < size; i++)
+      requestBuffer.remove().ack();
+  }
+
+  public long getTimestamp()
+  {
+    Calendar cal = Calendar.getInstance();
+    return cal.getTimeInMillis();
+  }
+
   public void update()
   {
+    if(waiting)   //waiting to enter CS. skip everything else
+      return;
+
     int updown=15;
     int diagonal=20;
     if(state == Direction.NORTH)
@@ -68,6 +140,11 @@ public class Node implements ActionListener
     if(x==inst.x2 && y==inst.y2)
     {
       //Entering the bridge going East
+      //It wants to enter the critical section here
+      if(!enterCriticalSection())
+        return;
+      else
+        acks = 0;
       state=Direction.EAST;
       x=x+updown;
     }
@@ -79,6 +156,11 @@ public class Node implements ActionListener
       y=y+(ydiff/diagonal);  
       if(x>inst.x2 || y>inst.y2)
       {
+          //It wants to enter the critical section here
+        if(!enterCriticalSection())
+          return;
+        else
+          acks = 0;
         x=inst.x2;
         y=inst.y2;
         state=Direction.EAST;
@@ -91,6 +173,7 @@ public class Node implements ActionListener
     if(x==inst.x3 && y==inst.y2)
     {
       //Leaving the bridge to go North East
+      exitCriticalSection();
       state=Direction.NORTH_EAST;
       int xdiff=inst.x4-inst.x3;
       int ydiff=inst.y1-inst.y2;    
@@ -102,6 +185,7 @@ public class Node implements ActionListener
       x=x+updown;
       if(x>inst.x3)
       {
+        exitCriticalSection();
         x=inst.x3;
         y=inst.y2;
         state=Direction.NORTH_EAST;
@@ -158,6 +242,11 @@ public class Node implements ActionListener
     if(x==inst.x3 && y==inst.y2)
     {
       //Now entering the bridge to go West
+      //It wants to enter the critical section here
+      if(!enterCriticalSection())
+        return;
+      else
+        acks = 0;
       state=Direction.WEST;
       x=x-updown;
     }
@@ -169,9 +258,14 @@ public class Node implements ActionListener
     y=y+(ydiff/diagonal);
     if(x<inst.x3 || y<inst.y2)
     {
-    x=inst.x3;
-    y=inst.y2;
-    state=Direction.WEST;
+      //It wants to enter the critical section here
+      if(!enterCriticalSection())
+        return;
+      else
+        acks = 0;
+      x=inst.x3;
+      y=inst.y2;
+      state=Direction.WEST;
     } 
     }
   }
@@ -181,6 +275,7 @@ public class Node implements ActionListener
     if(x==inst.x2 && y==inst.y2)
     {
       //Leaving Bridge to go South West
+      exitCriticalSection();
       state=Direction.SOUTH_WEST;
     int xdiff=inst.x1-inst.x2;
     int ydiff=inst.y3-inst.y2;    
@@ -192,9 +287,10 @@ public class Node implements ActionListener
       x=x-updown;
     if(x<inst.x2)
     {
+      exitCriticalSection();
       x=inst.x2;
-    y=inst.y2;
-    state=Direction.SOUTH_WEST;
+      y=inst.y2;
+      state=Direction.SOUTH_WEST;
     }
     }
   }
