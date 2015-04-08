@@ -19,6 +19,7 @@ public class View extends JPanel implements ChangeListener
   final int width=800;
 
   JSlider[] speedSliders;
+  JLabel[] sliderLabels;
   
   public View()
   {
@@ -34,7 +35,6 @@ public class View extends JPanel implements ChangeListener
     y2 = getInsets().top + (int)(height * 0.5);
     y3 = getInsets().top + (int)(height * 0.8);
   
-  
     int num = (y3-y1)/3;
     
     //nodes are self-managing and update themselves
@@ -45,12 +45,22 @@ public class View extends JPanel implements ChangeListener
     nodes[3] = new Node(3,"blue",x4,y3-num,Direction.SOUTH, this); 
     
     speedSliders = new JSlider[numNodes];
+    sliderLabels = new JLabel[numNodes];
     for (int sliderID = 0; sliderID < numNodes; sliderID++)
     {
-    	speedSliders[sliderID] = new JSlider(10, 500, 200);
-    	speedSliders[sliderID].setPreferredSize(new Dimension(150, 80));
+    	JPanel movementContainer = new JPanel();
+    	movementContainer.setLayout(new GridLayout(2, 1));
+    	
+    	sliderLabels[sliderID] = new JLabel("Person " + sliderID, SwingConstants.CENTER);
+    	sliderLabels[sliderID].setForeground(((sliderID < 2)? Color.red : Color.blue));
+    	movementContainer.add(sliderLabels[sliderID]);
+    	
+    	speedSliders[sliderID] = new JSlider(10, 230, 200);
+    	speedSliders[sliderID].setPreferredSize(new Dimension(120, 50));
     	speedSliders[sliderID].addChangeListener(this);
-    	add(speedSliders[sliderID]);
+    	movementContainer.add(speedSliders[sliderID]);
+    	
+    	add(movementContainer);
     }
   }
 

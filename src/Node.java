@@ -324,7 +324,7 @@ public class Node implements ActionListener
   
   public void setSpeed(int newSpeed)
   {
-	  timer.setDelay(500 - newSpeed);
+	  timer.setDelay(250 - newSpeed);
   }
  
 }
