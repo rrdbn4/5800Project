@@ -2,46 +2,39 @@ package code;
 
 
 import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.*;
 
-public class Node
+public class Node implements ActionListener
 {
   int ID;
   String color;
+  View inst;
   int x;
   int y;
   Direction state;
-  public Node(int id, String clr, int xcord, int ycord, Direction st)
+  public Node(int id, String clr, int xcord, int ycord, Direction st, View view)
   {
     ID=id;
     color=clr;
     x=xcord;
     y=ycord;
     state=st;
-  }
-  
-  // public String getDirection(Direction state)
-  // {
-  //   String direction ="Unknown";
-  //   if(state == Direction.NORTH)
-  //     direction = "North";
-  //   else if(state == Direction.SOUTH_EAST)
-  //     direction = "South East";
-  //   else if(state == Direction.EAST)
-  //     direction = "East";
-  //   else if(state == Direction.NORTH_EAST)
-  //     direction = "North East";
-  //   else if(state == Direction.SOUTH)
-  //     direction = "South";
-  //   else if(state == Direction.NORTH_WEST)
-  //     direction = "North West";
-  //   else if(state == Direction.WEST)
-  //     direction = "West";
-  //   else if(state == Direction.SOUTH_WEST)
-  //     direction = "South West";
-  //   return direction;
-  // }
+    inst = view;
 
-  public void update(View inst)
+    Timer timer = new Timer(200, this);
+    timer.setInitialDelay(200);
+    timer.setRepeats(true);
+    timer.start();
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    this.update();
+  }
+
+  public void update()
   {
     int updown=15;
     int diagonal=20;
@@ -228,6 +221,8 @@ public class Node
     }
     
   }
+
+  inst.repaint();
   
   }
  

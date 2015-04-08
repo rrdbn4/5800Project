@@ -10,7 +10,7 @@ import javax.swing.event.*;
 /*
 Robert Dunn, Holly Busken, Matt Lindner
 */
-public class View extends JPanel implements ActionListener
+public class View extends JPanel
 {
   Node redA;
   Node redB;
@@ -24,18 +24,7 @@ public class View extends JPanel implements ActionListener
   {
     setPreferredSize(new Dimension(800,600)); 
     setVisible(true);
-    validate();    
-    
-
-    Timer timer = new Timer(200, this);
-    timer.setInitialDelay(0);
-    timer.setRepeats(true);
-    timer.start();
-  }
-
-  public void actionPerformed(ActionEvent e)
-  {
-    repaint();
+    validate();
   }
 
   public void paintComponent(Graphics g)
@@ -58,10 +47,10 @@ public class View extends JPanel implements ActionListener
 	  
       int num = (y3-y1)/3;
       
-      redA=new Node(1,"red",x1,y1+num,Direction.NORTH);
-      redB=new Node(2,"red",x1,y3-num,Direction.NORTH);
-      blueA=new Node(3,"blue",x4,y1+num,Direction.SOUTH);
-      blueB=new Node(4,"blue",x4,y3-num,Direction.SOUTH); 
+      redA=new Node(1,"red",x1,y1+num,Direction.NORTH, this);
+      redB=new Node(2,"red",x1,y3-num,Direction.NORTH, this);
+      blueA=new Node(3,"blue",x4,y1+num,Direction.SOUTH, this);
+      blueB=new Node(4,"blue",x4,y3-num,Direction.SOUTH, this); 
 
       firstTime = false;
     }
@@ -81,10 +70,10 @@ public class View extends JPanel implements ActionListener
     g.drawLine(x3, y2, x4, y3);
   
     //Update nodes
-    redA.update(this);
-    redB.update(this);
-    blueA.update(this);
-    blueB.update(this);  
+    // redA.update();
+    // redB.update();
+    // blueA.update();
+    // blueB.update();  
   
     //draw Nodes
     int diameter=10;
