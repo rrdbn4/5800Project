@@ -12,16 +12,15 @@ Robert Dunn, Holly Busken, Matt Lindner
 */
 public class View extends JPanel
 {
-  Node redA;
-  Node redB;
-  Node blueA;
-  Node blueB;
+  Node[] nodes;
+  final int numNodes = 4;
+
   int x1, x2, x3, x4;
-  int y1, y2, y3;  
+  int y1, y2, y3; 
+
   final int height=600;
   final int width=800;
 
-  boolean firstTime = true;
   public View()
   {
     setPreferredSize(new Dimension(width, height)); 
@@ -40,10 +39,11 @@ public class View extends JPanel
     int num = (y3-y1)/3;
     
     //nodes are self-managing and update themselves
-    redA=new Node(1,"red",x1,y1+num,Direction.NORTH, this);
-    redB=new Node(2,"red",x1,y3-num,Direction.NORTH, this);
-    blueA=new Node(3,"blue",x4,y1+num,Direction.SOUTH, this);
-    blueB=new Node(4,"blue",x4,y3-num,Direction.SOUTH, this); 
+    nodes = new Node[numNodes];
+    nodes[0] = new Node(0,"red",x1,y1+num,Direction.NORTH, this);
+    nodes[1] = new Node(1,"red",x1,y3-num,Direction.NORTH, this);
+    nodes[2] = new Node(2,"blue",x4,y1+num,Direction.SOUTH, this);
+    nodes[3] = new Node(3,"blue",x4,y3-num,Direction.SOUTH, this); 
   }
 
   public void paintComponent(Graphics g)
@@ -67,10 +67,10 @@ public class View extends JPanel
     final int diameter=10;
     final int rad=diameter/2;
     g.setColor(Color.red);
-    g.fillOval(redA.x-rad,redA.y-rad,diameter,diameter);
-    g.fillOval(redB.x-rad,redB.y-rad,diameter,diameter);
+    for(int i = 0; i < numNodes / 2; i++)
+      g.fillOval(nodes[i].x-rad,nodes[i].y-rad,diameter,diameter);
     g.setColor(Color.blue);
-    g.fillOval(blueA.x-rad,blueA.y-rad,diameter,diameter);
-    g.fillOval(blueB.x-rad,blueB.y-rad,diameter,diameter);
+    for(int i = numNodes / 2; i < numNodes; i++)
+      g.fillOval(nodes[i].x-rad,nodes[i].y-rad,diameter,diameter);
   }
 }

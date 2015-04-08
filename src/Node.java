@@ -85,7 +85,7 @@ public class Node implements ActionListener
       } 
     }
   }
-  else if(state==Direction.EAST)
+  else if(state==Direction.EAST)  //in the critical section
   {
     //Moving East on the bridge 
     if(x==inst.x3 && y==inst.y2)
@@ -175,7 +175,7 @@ public class Node implements ActionListener
     } 
     }
   }
-  else if(state==Direction.WEST)
+  else if(state==Direction.WEST)  // in the critical section
   {
     //Moving West on the Bridge
     if(x==inst.x2 && y==inst.y2)
