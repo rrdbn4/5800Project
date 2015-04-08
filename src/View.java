@@ -3,11 +3,12 @@ package code;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
+import java.awt.event.*;
 
 /*
 Robert Dunn, Holly Busken, Matt Lindner
 */
-public class View extends JPanel implements ChangeListener
+public class View extends JPanel implements ChangeListener, ActionListener
 {
   Node[] nodes;
   final int numNodes = 4;
@@ -20,6 +21,8 @@ public class View extends JPanel implements ChangeListener
 
   JSlider[] speedSliders;
   JLabel[] sliderLabels;
+  
+  JCheckBox allowMultiple;
   
   public View()
   {
@@ -62,6 +65,10 @@ public class View extends JPanel implements ChangeListener
     	
     	add(movementContainer);
     }
+    
+    allowMultiple = new JCheckBox("Allow Multiple People 1-Way", false);
+    allowMultiple.addActionListener(this);
+    add(allowMultiple);
   }
 
   public void paintComponent(Graphics g)
@@ -110,6 +117,14 @@ public class View extends JPanel implements ChangeListener
 	else if (e.getSource() == speedSliders[3])
 	{
 		nodes[3].setSpeed(speedSliders[3].getValue());
+	}
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+	for (int i = 0; i < numNodes; i++)
+	{
+		nodes[i].setAllowMultiple(allowMultiple.isSelected());
 	}
   }
 }

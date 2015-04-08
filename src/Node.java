@@ -326,5 +326,11 @@ public class Node implements ActionListener
   {
 	  timer.setDelay(250 - newSpeed);
   }
+  
+  public void setAllowMultiple(boolean allowMultiple)
+  {
+	  // TO DO
+	  System.out.println(allowMultiple);
+  }
  
 }
