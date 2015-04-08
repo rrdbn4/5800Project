@@ -1,9 +1,6 @@
 package code;
 
-
-import javax.swing.*;
 import javax.swing.Timer;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.Calendar;
 import java.util.*;
@@ -20,6 +17,8 @@ public class Node implements ActionListener
   int acks = 0;
   long requestTimestamp = 0;
   Queue<Node> requestBuffer;
+  
+  Timer timer;
 
   public Node(int id, String clr, int xcord, int ycord, Direction st, View view)
   {
@@ -31,7 +30,7 @@ public class Node implements ActionListener
     state=st;
     inst = view;
 
-    Timer timer = new Timer(200, this);
+    timer = new Timer(200, this);
     timer.setInitialDelay(200);
     timer.setRepeats(true);
     timer.start();
@@ -321,6 +320,11 @@ public class Node implements ActionListener
 
   inst.repaint();
   
+  }
+  
+  public void setSpeed(int newSpeed)
+  {
+	  timer.setDelay(500 - newSpeed);
   }
  
 }
