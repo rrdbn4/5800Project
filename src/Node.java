@@ -52,11 +52,12 @@ public class Node implements ActionListener
     	{
     		callingNode.ack();
     	}
-    	if (callingNode.state == Direction.SOUTH_EAST && state == Direction.EAST && allowMultiple && callingNode.allowMultiple)
+    	else if (callingNode.state == Direction.SOUTH_EAST && state == Direction.EAST && allowMultiple && callingNode.allowMultiple)
     	{
     		callingNode.ack();
     	}
-      bufferRequest(callingNode);
+      else
+        bufferRequest(callingNode);
     }
     if(state != Direction.WEST && state != Direction.EAST && waiting)  //not in CS and waiting to enter
     {
