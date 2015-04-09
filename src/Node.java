@@ -14,6 +14,7 @@ public class Node implements ActionListener
   int y;
   Direction state;
   boolean waiting = false;
+  boolean allowMultiple = false;
   int acks = 0;
   long requestTimestamp = 0;
   Queue<Node> requestBuffer;
@@ -45,8 +46,18 @@ public class Node implements ActionListener
   {
     if(state != Direction.WEST && state != Direction.EAST && !waiting) //not in CS and not waiting to enter
       callingNode.ack();
-    if(state == Direction.WEST || state == Direction.EAST)             //in CS
+    if(state == Direction.WEST || state == Direction.EAST)
+    {//in CS
+    	if (callingNode.state == Direction.NORTH_WEST && state == Direction.WEST && allowMultiple && callingNode.allowMultiple)
+    	{
+    		callingNode.ack();
+    	}
+    	if (callingNode.state == Direction.SOUTH_EAST && state == Direction.EAST && allowMultiple && callingNode.allowMultiple)
+    	{
+    		callingNode.ack();
+    	}
       bufferRequest(callingNode);
+    }
     if(state != Direction.WEST && state != Direction.EAST && waiting)  //not in CS and waiting to enter
     {
       if(callingNode.requestTimestamp <= this.requestTimestamp)
@@ -106,7 +117,7 @@ public class Node implements ActionListener
   public void update()
   {
     if(waiting)   //waiting to enter CS. skip everything else
-      return;     //this ismainly for when the timer tries to call update() during a waiting state
+      return;     //this is mainly for when the timer tries to call update() during a waiting state
 
     int updown=15;
     int diagonal=20;
@@ -329,8 +340,7 @@ public class Node implements ActionListener
   
   public void setAllowMultiple(boolean allowMultiple)
   {
-	  // TO DO
-	  System.out.println(allowMultiple);
+	  this.allowMultiple = allowMultiple;
   }
  
 }
