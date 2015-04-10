@@ -76,7 +76,33 @@ public class Node implements ActionListener
     {
       waiting = false; //this allows it to go past the timer check at the beginning of update()
       update();        //acks will be reset to 0 inside update()
+      return;
     }
+    // if(allowMultiple)
+    // {
+    //   boolean safeToEnter = true;
+    //   if(state == Direction.NORTH_WEST)
+    //   {
+    //     for(int i = 0; i < inst.numNodes; i++)
+    //     {
+    //       if(i != ID && inst.nodes[i].state == Direction.EAST)
+    //         safeToEnter = false;
+    //     } 
+    //   }
+    //   else if(state == Direction.SOUTH_EAST)
+    //   {
+    //     for(int i = 0; i < inst.numNodes; i++)
+    //     {
+    //       if(i != ID && inst.nodes[i].state == Direction.WEST)
+    //         safeToEnter = false;
+    //     } 
+    //   }
+    //   if(safeToEnter)
+    //   {
+    //     waiting = false; //this allows it to go past the timer check at the beginning of update()
+    //     update();        //acks will be reset to 0 inside update()
+    //   }
+    // }
   }
 
   public void bufferRequest(Node callingNode)
