@@ -42,10 +42,10 @@ public class View extends JPanel implements ChangeListener, ActionListener
     
     //nodes are self-managing and update themselves
     nodes = new Node[numNodes];
-    nodes[0] = new Node(0,"red",x1,y1+num,Direction.NORTH, this);
-    nodes[1] = new Node(1,"red",x1,y3-num,Direction.NORTH, this);
-    nodes[2] = new Node(2,"blue",x4,y1+num,Direction.SOUTH, this);
-    nodes[3] = new Node(3,"blue",x4,y3-num,Direction.SOUTH, this); 
+    nodes[0] = new Node(0,"red",x1,y1+num,Direction.NORTH, this, 200);
+    nodes[1] = new Node(1,"red",x1,y3-num,Direction.NORTH, this, 200);
+    nodes[2] = new Node(2,"blue",x4,y1+num,Direction.SOUTH, this, 250);
+    nodes[3] = new Node(3,"blue",x4,y3-num,Direction.SOUTH, this, 250); 
     
     speedSliders = new JSlider[numNodes];
     sliderLabels = new JLabel[numNodes];
@@ -101,7 +101,7 @@ public class View extends JPanel implements ChangeListener, ActionListener
   }
 
   public void stateChanged(ChangeEvent e)
-  {
+  { System.out.println("here");
 	if (e.getSource() == speedSliders[0])
 	{
 		nodes[0].setSpeed(speedSliders[0].getValue());

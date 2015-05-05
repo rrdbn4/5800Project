@@ -21,7 +21,7 @@ public class Node implements ActionListener
   
   Timer timer;
 
-  public Node(int id, String clr, int xcord, int ycord, Direction st, View view)
+  public Node(int id, String clr, int xcord, int ycord, Direction st, View view, int initialDelay)
   {
     requestBuffer = new LinkedList<Node>();
     ID=id;
@@ -31,8 +31,7 @@ public class Node implements ActionListener
     state=st;
     inst = view;
 
-    timer = new Timer(200, this);
-    timer.setInitialDelay(200);
+    timer = new Timer(initialDelay, this);
     timer.setRepeats(true);
     timer.start();
   }
