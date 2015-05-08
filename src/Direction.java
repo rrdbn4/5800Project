@@ -3,6 +3,7 @@ package code;
 /*
 Robert Dunn, Holly Busken, Matt Lindner
 */
+// Direction enumerator for the states in the Node class
 public enum Direction
 {
   NORTH, 

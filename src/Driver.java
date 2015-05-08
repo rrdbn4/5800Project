@@ -5,6 +5,7 @@ import javax.swing.*;
 /*
 Robert Dunn, Holly Busken, Matt Lindner
 */
+// Purely a view holder for the JPanel containing the GUI
 public class Driver extends JFrame
 {
   public Driver()

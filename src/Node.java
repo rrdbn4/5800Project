@@ -5,22 +5,40 @@ import java.awt.event.*;
 import java.util.Calendar;
 import java.util.*;
 
+/*
+Robert Dunn, Holly Busken, Matt Lindner
+*/
+// The Node class contains the functionality of each node represented on the map
+// Each node is self-reliant and talks to all the other nodes
 public class Node implements ActionListener
 {
+  // a unique identifier
   int ID;
+  // the color of the node
   String color;
+  // the reference to the graphical view. It contains information relevant to the function of the node
   View inst;
+  // position y
   int x;
+  // position y
   int y;
+  // the current direction state of the node
   Direction state;
+  // is this node waiting to enter the bridge?
   boolean waiting = false;
+  // boolean for allowing multiple on the bridge (in the same direction) at the same time
   boolean allowMultiple = false;
+  // the number of acknowledgements received back
   int acks = 0;
+  // the timestamp of the request
   long requestTimestamp = 0;
+  // the waiting queue for all the nodes that are waiting for a response back from this node
   Queue<Node> requestBuffer;
-  
-  Timer timer;
+  // the self-calling movement update timer
+  Timer timer;                       
 
+  // Parameterized constructor
+  // all parameters are pretty self-explanatory
   public Node(int id, String clr, int xcord, int ycord, Direction st, View view, int initialDelay)
   {
     requestBuffer = new LinkedList<Node>();
@@ -36,11 +54,15 @@ public class Node implements ActionListener
     timer.start();
   }
 
+  // callback method for the timer that updates the node
   public void actionPerformed(ActionEvent e)
   {
-    this.update();  //for the calls from the timer
+    this.update();
   }
 
+  // This is the method for other nodes to call when they are requesting to enter the bridge
+  // This node will send back an acknowledgement to the calling node when this node deems it safe to enter the bridge
+  // requests from the calling node will either be acknowledged immediately or queued for an acknowledgement later
   public void request(Node callingNode)
   {
     if(state != Direction.WEST && state != Direction.EAST && !waiting) //not in CS and not waiting to enter
@@ -68,6 +90,8 @@ public class Node implements ActionListener
 
   }
 
+  // This is the method other nodes call when they send an acknowledgement back to this node
+  // When an ack is received, acks increments, and if there are as many acks as there are other nodes, then it is safe to enter the bridge
   public void ack()
   {
     acks++;
@@ -77,40 +101,17 @@ public class Node implements ActionListener
       update();        //acks will be reset to 0 inside update()
       return;
     }
-    // if(allowMultiple)
-    // {
-    //   boolean safeToEnter = true;
-    //   if(state == Direction.NORTH_WEST)
-    //   {
-    //     for(int i = 0; i < inst.numNodes; i++)
-    //     {
-    //       if(i != ID && inst.nodes[i].state == Direction.EAST)
-    //         safeToEnter = false;
-    //     } 
-    //   }
-    //   else if(state == Direction.SOUTH_EAST)
-    //   {
-    //     for(int i = 0; i < inst.numNodes; i++)
-    //     {
-    //       if(i != ID && inst.nodes[i].state == Direction.WEST)
-    //         safeToEnter = false;
-    //     } 
-    //   }
-    //   if(safeToEnter)
-    //   {
-    //     waiting = false; //this allows it to go past the timer check at the beginning of update()
-    //     update();        //acks will be reset to 0 inside update()
-    //   }
-    // }
   }
 
+  // add an incoming request to the request queue for acknowledgement later
   public void bufferRequest(Node callingNode)
   {
     requestBuffer.add(callingNode);
   }
 
-  //retuns true if the node is allowed to enter the CS
-  //if the node is not allowed to enter the CS, this preps it to enter the CS and returns false
+  
+  // retuns true if the node is allowed to enter the CS
+  // if the node is not allowed to enter the CS, this preps it to enter the CS and returns false
   public boolean enterCriticalSection()
   {
     if(acks >= inst.numNodes - 1)
@@ -126,7 +127,7 @@ public class Node implements ActionListener
     return false;
   }
 
-  //send acks to all nodes in the request buffer
+  // send acks to all nodes in the request buffer to tell them you left the CS
   public void exitCriticalSection()
   {
     int size = requestBuffer.size();
@@ -134,12 +135,16 @@ public class Node implements ActionListener
       requestBuffer.remove().ack();
   }
 
+  // get a timestamp for the requests
   public long getTimestamp()
   {
     Calendar cal = Calendar.getInstance();
     return cal.getTimeInMillis();
   }
 
+  // update the position of the node
+  // take the necessary precautions when entering and leaving the critical session
+  // this method is called by the node's timer
   public void update()
   {
     if(waiting)   //waiting to enter CS. skip everything else
@@ -359,11 +364,13 @@ public class Node implements ActionListener
   
   }
   
+  // set the timer interval for the update() method
   public void setSpeed(int newSpeed)
   {
 	  timer.setDelay(250 - newSpeed);
   }
   
+  // set whether or not to allow multiple nodes on the bridge at the same time in the same direction
   public void setAllowMultiple(boolean allowMultiple)
   {
 	  this.allowMultiple = allowMultiple;
