@@ -10,18 +10,28 @@ Robert Dunn, Holly Busken, Matt Lindner
 */
 public class View extends JPanel implements ChangeListener, ActionListener
 {
+	// Array to store/access nodes
   Node[] nodes;
+	// The number of nodes in our graph.
   final int numNodes = 4;
   
+	// The intersection points of the "track" on which the Nodes "ride"
   int x1, x2, x3, x4;
   int y1, y2, y3; 
 
+	// The height of the Java window
   final int height=600;
+	// The width of the Java window
   final int width=800;
 
+	// Array containing the sliders used to adjust the speed of the Nodes
   JSlider[] speedSliders;
+	// Array containing the description labels
   JLabel[] sliderLabels;
   
+	// GUI element indicating whether or not the program will allow
+	// multiple nodes to cross the bridge as long as they are travelling
+	// in the same direction.
   JCheckBox allowMultiple;
   
   public View()
